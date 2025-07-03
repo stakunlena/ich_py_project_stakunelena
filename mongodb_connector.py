@@ -1,6 +1,7 @@
 from pymongo import MongoClient, errors
 from settings import MONGODB_SETTINGS
 from datetime import datetime
+from logger import log_error # Функция логирования ошибок в файл
 
 """ Временно, до вынесения функций в отдельный модуль
 from pymongo.collection import Collection
@@ -14,11 +15,20 @@ def connect_to_mongo():
         db = client[MONGODB_SETTINGS['db']]
         collection = db[MONGODB_SETTINGS['collection']]
         return client, collection
-    except errors.ConnectionFailure:
-        print("Ошибка подключения к MongoDB")
-    except errors.OperationFailure:
-        print("Ошибка авторизации или запроса")
-
+#Первая версия - без логирования ошибок в файл      
+#    except errors.ConnectionFailure:
+#        print("Ошибка подключения к MongoDB")
+#    except errors.OperationFailure:
+#        print("Ошибка авторизации или запроса")"""
+    except errors.ConnectionFailure as e:
+        msg = f"Ошибка подключения к MongoDB: {e}"
+        print(msg)
+        log_error(msg)
+    except errors.OperationFailure as e:
+        msg = f"Ошибка авторизации или запроса в MongoDB: {e}"
+        print(msg)
+        log_error(msg)
+        
 def log_search_to_mongo(search_type: str, params: dict, results_count: int):
     """Записывает структуру запроса в коллекцию MongoDB."""
     client, collection = connect_to_mongo()

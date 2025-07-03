@@ -4,10 +4,11 @@
 
 from mongodb_connector import *
 from mysql_connector import *
+from logger import log_error # Функция логирования ошибок в файл
 
 def handle_keyword_search():
     print("\n== ПОИСК ПО КЛЮЧЕВОМУ СЛОВУ ==")
-    keyword = input("Введите часть названия фильма (или 0 для возврата): ")
+    keyword = input("Введите слово или название фильма (или 0 для возврата): ")
     if keyword == "0":
         return
 
@@ -253,7 +254,10 @@ def show_top_5_keyword_queries():
     try:
         get_most_frequent_queries()
     except Exception as e:
-        print(f"Ошибка при получении статистики: {e}")
+        # print(f"Ошибка при получении статистики: {e}")
+        error_msg = f"Ошибка при получении статистики: {e}"
+        print(error_msg)
+        log_error(error_msg)
 
 """   
 Первая версия функции - заглушка
@@ -268,7 +272,10 @@ def show_last_5_keyword_queries():
     try:
         get_last_queries(limit=5)
     except Exception as e:
-        print(f"Ошибка при получении последних запросов: {e}")
+        #print(f"Ошибка при получении последних запросов: {e}")
+        error_msg = f"Ошибка при получении последних запросов: {e}"
+        print(error_msg)
+        log_error(error_msg)
 
    
 def show_recent_query_logs():

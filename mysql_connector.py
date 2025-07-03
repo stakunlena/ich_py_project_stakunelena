@@ -4,6 +4,7 @@
 import pymysql
 from pymysql.cursors import DictCursor
 from settings import MYSQL_SETTINGS
+from logger import log_error # Функция логирования ошибок в файл
 
 def connect_to_db():
     '''
@@ -31,7 +32,10 @@ def connect_to_db():
         #print("Подключение к базе данных успешно.")
         return connection
     except pymysql.MySQLError as e:
-        print(f"Ошибка подключения к базе данных: {e}")
+        # print(f"Ошибка подключения к базе данных: {e}")
+        msg = "Ошибка подключения к базе данных: {e}"
+        print(msg)
+        log_error(msg)
         return None
         
 def search_by_keyword(keyword):
@@ -51,7 +55,10 @@ def search_by_keyword(keyword):
             results = cursor.fetchall()
             return results  # возвращаем список результатов
     except pymysql.MySQLError as e:
-        print(f"Ошибка при выполнении запроса: {e}")
+        #print(f"Ошибка при выполнении запроса: {e}")
+        msg = "Ошибка при выполнении запроса: {e}"
+        print(msg)
+        log_error(msg)        
         return []
     finally:
         connection.close()
@@ -71,7 +78,10 @@ def get_all_genres():
             ''')
             return cursor.fetchall()
     except pymysql.MySQLError as e:
-        print(f"Ошибка при получении жанров: {e}")
+        #print(f"Ошибка при получении жанров: {e}")
+        msg = "Ошибка при получении жанров: {e}"
+        print(msg)
+        log_error(msg)           
         return []
     finally:
         connection.close()
@@ -92,7 +102,10 @@ def get_year_range_for_genre(category_id):
             result = cursor.fetchone()
             return result['MIN(f.release_year)'], result['MAX(f.release_year)']
     except pymysql.MySQLError as e:
-        print(f"Ошибка при получении диапазона годов: {e}")
+        #print(f"Ошибка при получении диапазона годов: {e}")
+        msg = "Ошибка при получении диапазона годов: {e}"
+        print(msg)
+        log_error(msg)              
         return None, None
     finally:
         connection.close()
@@ -114,7 +127,10 @@ def search_by_genre_and_years(category_id, year_from, year_to):
             ''', (category_id, year_from, year_to))
             return cursor.fetchall()
     except pymysql.MySQLError as e:
-        print(f"Ошибка при поиске фильмов: {e}")
+        #print(f"Ошибка при поиске фильмов: {e}")
+        msg = "Ошибка при поиске фильмов: {e}"
+        print(msg)
+        log_error(msg)        
         return []
     finally:
         connection.close()

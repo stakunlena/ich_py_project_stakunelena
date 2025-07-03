@@ -1,0 +1,6 @@
+timestamp,error_message
+2025-07-03T14:39:37,Ошибка подключения к базе данных: {e}
+2025-07-03T14:40:55,"Ошибка при получении статистики: Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}"
+2025-07-03T14:41:06,"Ошибка при получении последних запросов: Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}"
+2025-07-03T14:41:12,Ошибка подключения к базе данных: {e}
+2025-07-03T14:41:23,Ошибка подключения к базе данных: {e}
