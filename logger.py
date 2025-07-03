@@ -1,13 +1,19 @@
-"""
-Модуль логирования ошибок приложения в csv файл
-"""
+# Модуль логирования ошибок приложения в csv файл
+
 import csv
 import os
 from datetime import datetime
 
 
 def log_error(error_msg: str) -> None:
-    """Сохраняет сообщение об ошибке в CSV-файл."""
+    """
+    Сохраняет сообщение об ошибке в CSV-файл 'error_log.csv'.
+
+    Каждая запись содержит временную метку и текст ошибки.
+    Если файл не существует, создается с заголовком.
+    
+    :param error_msg: Сообщение об ошибке для записи в журнал.
+    """
     log_file = os.path.join(os.getcwd(), "error_log.csv")
     file_exists = os.path.isfile(log_file)
 

@@ -1,31 +1,16 @@
-"""
-Модуль отвечающий за подключение к MySQL и содержащий функции поиска
-"""
+# Модуль отвечающий за подключение к MySQL и содержащий функции поиска
+ 
 import pymysql
 from pymysql.cursors import DictCursor
 from settings import MYSQL_SETTINGS
 from logger import log_error # Функция логирования ошибок в файл
 
 def connect_to_db():
-    '''
-    Устанавливает соединение с базой данных sakila с использованием PyMySQL.
-    Возвращает объект соединения или None в случае ошибки.
-    '''
-    
     """
-    try:
-        load_dotenv() # Временно. Загружаем переменные среды
-    except:
-        print('Не удалось загрузить переменные среды')
-    
-    config = {
-        'host': os.getenv('MYSQL_HOST'), # Загружаем значение из переменной окружения MYSQL_HOST
-        'user': os.getenv('MYSQL_USER'), # Загружаем значение из переменной окружения MYSQL_USER
-        'password': os.getenv('MYSQL_PASSWORD'), # Загружаем значение из переменной окружения MYSQL_PASSWORD
-        'database': os.getenv('MYSQL_DATABASE'), # Загружаем значение из переменной окружения MYSQL_DATABASE
-        'charset': 'utf8mb4',
-        'cursorclass': pymysql.cursors.DictCursor
-    }
+    Устанавливает соединение с базой данных MySQL (sakila)
+    с использованием настроек из переменных среды.
+
+    :return: объект соединения pymysql или None в случае ошибки.
     """
     try:
         connection = pymysql.connect(**MYSQL_SETTINGS, cursorclass=DictCursor)
@@ -39,6 +24,13 @@ def connect_to_db():
         return None
         
 def search_by_keyword(keyword):
+    """
+    Выполняет поиск фильмов по части названия (ключевому слову) в базе MySQL.
+
+    :param keyword: Ключевое слово для поиска в названии фильма.
+    :return: Список словарей с информацией о фильмах (film_id, title, description, release_year).
+             Если возникает ошибка — возвращается пустой список.
+    """
     connection = connect_to_db()
     if connection is None:
         return []
@@ -63,8 +55,13 @@ def search_by_keyword(keyword):
     finally:
         connection.close()
 
-##обработка второго пункта меню
 def get_all_genres():
+    """
+    Получает список всех жанров из таблицы category базы данных MySQL.
+
+    :return: Список словарей с полями 'category_id' и 'name'.
+             В случае ошибки — пустой список.
+    """
     connection = connect_to_db()
     if connection is None:
         return []
@@ -87,6 +84,12 @@ def get_all_genres():
         connection.close()
 
 def get_year_range_for_genre(category_id):
+    """
+    Возвращает минимальный и максимальный год выпуска фильмов для указанного жанра.
+
+    :param category_id: Идентификатор жанра (категории).
+    :return: Кортеж (min_year, max_year) или (None, None) в случае ошибки или отсутствия данных.
+    """
     connection = connect_to_db()
     if connection is None:
         return None, None
@@ -111,6 +114,15 @@ def get_year_range_for_genre(category_id):
         connection.close()
 
 def search_by_genre_and_years(category_id, year_from, year_to):
+    """
+    Выполняет поиск фильмов по жанру и диапазону годов выпуска.
+
+    :param category_id: Идентификатор жанра.
+    :param year_from: Начальный год диапазона.
+    :param year_to: Конечный год диапазона.
+    :return: Список фильмов в формате словарей (film_id, title, description, release_year).
+             В случае ошибки — пустой список.
+    """
     connection = connect_to_db()
     if connection is None:
         return []
