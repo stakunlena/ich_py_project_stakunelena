@@ -1,8 +1,9 @@
 from pymongo import MongoClient, errors
 from settings import MONGODB_SETTINGS
+from datetime import datetime
+
 """ Временно, до вынесения функций в отдельный модуль
 from pymongo.collection import Collection
-from datetime import datetime
 from typing import Optional
 """
 

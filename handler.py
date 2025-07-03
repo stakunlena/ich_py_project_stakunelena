@@ -1,99 +1,10 @@
-# from mongodb_connector import *
-# from mysql_connector import *
-
-from handler import * # Импорт обработчиков пунктов меню из модуля handler.py
-
 """
-Новая версия главного меню. Добавлено подменю статистика запросов
-"""
-def run_menu():
-    while True:
-        print("\n===============================")
-        print("     Приложение 'Фильмы'")
-        print("===============================")
-        print("1. Поиск по ключевому слову")
-        print("2. Поиск по жанру и годам")
-        print("3. Статистика запросов")
-        print("-------------------------------")
-        print("0. Выход")
-        print("===============================")
-
-        choice = input("Выберите пункт: ")
-
-        if choice == "1":
-            handle_keyword_search()
-        elif choice == "2":
-            handle_genre_search()
-        elif choice == "3":
-            show_statistics_menu()
-        elif choice == "0":
-            print("Выход из приложения.")
-            break
-        else:
-            print("Неверный ввод. Повторите.\n")
-
-"""
-Функция обработки подменю "Статистика запросов"
+Модуль содержит обработчики основных команд приложения
 """
 
-def show_statistics_menu():
-    while True:
-        print("\n== СТАТИСТИКА ЗАПРОСОВ ==")
-        print("1. 5 наиболее частых поисков по ключевому слову")
-        print("2. Последние 5 поисков по ключевому слову")
-        print("3. Список всех последних запросов")
-        print("0. Возврат в главное меню")
+from mongodb_connector import *
+from mysql_connector import *
 
-        sub_choice = input("Выберите пункт: ")
-
-        if sub_choice == "1":
-            show_top_5_keyword_queries()
-        elif sub_choice == "2":
-            show_last_5_keyword_queries()
-        elif sub_choice == "3":
-            show_recent_query_logs()
-        elif sub_choice == "0":
-            break
-        else:
-            print("Неверный ввод. Повторите.\n")
-
-
-"""
-Первая версия главного меню. Без подменю "Статистика запросов"
-
-def run_menu():
-    while True:
-        print("===============================")
-        print("     Приложение 'Фильмы'")
-        print("===============================")
-        print("1. Поиск по ключевому слову")
-        print("2. Поиск по жанру и годам")
-        print("3. Популярные запросы")
-        print("4. Последние запросы")
-        print("-------------------------------")
-        print("0. Выход")
-        print("===============================")
-
-        choice = input("Выберите пункт: ")
-
-        if choice == "1":
-            handle_keyword_search()
-        elif choice == "2":
-            handle_genre_search()
-        elif choice == "3":
-            show_popular_queries()
-        elif choice == "4":
-            show_recent_queries()
-        elif choice == "0":
-            print("Выход из приложения.")
-            break
-        else:
-            print("Неверный ввод. Повторите.\n")
-"""
-
-"""
-# Весь код ниже выделить в отдельный модуль handlers.py
-#--------------------------------------------------------------------------------
 def handle_keyword_search():
     print("\n== ПОИСК ПО КЛЮЧЕВОМУ СЛОВУ ==")
     keyword = input("Введите часть названия фильма (или 0 для возврата): ")
@@ -265,7 +176,8 @@ def handle_genre_search():
             break
 
 
-def handle_genre_search():
+
+"""def handle_genre_search():
     print("\n== ПОИСК ПО ЖАНРУ И ГОДАМ ==")
     genre = input("Введите жанр (или 0 для возврата): ")
     if genre == "0":
@@ -325,7 +237,7 @@ def show_recent_queries():
 
 """
 Обработчики для пункта меню «Статистика запросов»
-
+"""
 
 def show_top_5_keyword_queries():
     print("\n== ТОП-5 ПОПУЛЯРНЫХ ЗАПРОСОВ ==")
@@ -341,5 +253,3 @@ def show_recent_query_logs():
     print("\n== СПИСОК ВСЕХ ПОИСКОВЫХ ЗАПРОСОВ (ДЛЯ ТЕСТИРОВАНИЯ) ==")
     # Здесь будет вызов функции статистики
     print("(заглушка) список всех поисковых запросов\n")
-    
-"""
