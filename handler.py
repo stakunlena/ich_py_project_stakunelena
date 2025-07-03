@@ -239,17 +239,73 @@ def show_recent_queries():
 Обработчики для пункта меню «Статистика запросов»
 """
 
+"""
+Первая версия функции - заглушка
 def show_top_5_keyword_queries():
     print("\n== ТОП-5 ПОПУЛЯРНЫХ ЗАПРОСОВ ==")
     # Здесь будет вызов функции статистики
     print("(заглушка) список топ-5 популярных запросов\n")
-    
+
+"""
+
+def show_top_5_keyword_queries():
+    print("\n== ТОП-5 ПОПУЛЯРНЫХ ЗАПРОСОВ ==")
+    try:
+        get_most_frequent_queries()
+    except Exception as e:
+        print(f"Ошибка при получении статистики: {e}")
+
+"""   
+Первая версия функции - заглушка
 def show_last_5_keyword_queries():
     print("\n== ПОСЛЕДНИЕ 5 ПОИСКОВЫХ ЗАПРОСОВ ==")
     # Здесь будет вызов функции статистики
     print("(заглушка) список популярных запросов\n")
-    
+"""
+
+def show_last_5_keyword_queries():
+    print("\n== ПОСЛЕДНИЕ 5 ПОИСКОВЫХ ЗАПРОСОВ ==")
+    try:
+        get_last_queries(limit=5)
+    except Exception as e:
+        print(f"Ошибка при получении последних запросов: {e}")
+
+   
 def show_recent_query_logs():
-    print("\n== СПИСОК ВСЕХ ПОИСКОВЫХ ЗАПРОСОВ (ДЛЯ ТЕСТИРОВАНИЯ) ==")
-    # Здесь будет вызов функции статистики
-    print("(заглушка) список всех поисковых запросов\n")
+    print("\n== СПИСОК ВСЕХ ПОИСКОВЫХ ЗАПРОСОВ (ПО 10 НА СТРАНИЦЕ) ==")
+
+    client, collection = connect_to_mongo()
+
+    try:
+        cursor = collection.find().sort("timestamp", -1)
+        results = list(cursor)
+        if not results:
+            print("Нет сохранённых запросов.\n")
+            return
+
+        index = 0
+        page_size = 10
+        total = len(results)
+
+        while index < total:
+            page = results[index:index + page_size]
+            for doc in page:
+                timestamp = doc.get("timestamp", "N/A")
+                search_type = doc.get("search_type", "N/A")
+                params = doc.get("params", {})
+                results_count = doc.get("results_count", "N/A")
+
+                print(f"[{timestamp}] {search_type.upper()} — {params} (результатов: {results_count})")
+
+            index += page_size
+
+            if index < total:
+                cont = input("\nПоказать ещё 10 запросов? (y/n): ").strip().lower()
+                if cont != "y":
+                    break
+            else:
+                print("\nЭто были все запросы.\n")
+
+    finally:
+        client.close()
+
